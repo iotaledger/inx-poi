@@ -22,13 +22,15 @@ import (
 )
 
 type NodeBridge struct {
-	logger     *logger.Logger
+	// the logger used to log events.
+	*logger.WrappedLogger
+
 	conn       *grpc.ClientConn
 	client     inx.INXClient
 	NodeConfig *inx.NodeConfiguration
 }
 
-func NewNodeBridge(ctx context.Context, address string, logger *logger.Logger) (*NodeBridge, error) {
+func NewNodeBridge(ctx context.Context, address string, log *logger.Logger) (*NodeBridge, error) {
 
 	conn, err := grpc.Dial(address,
 		grpc.WithChainUnaryInterceptor(grpc_retry.UnaryClientInterceptor(), grpc_prometheus.UnaryClientInterceptor),
@@ -43,17 +45,17 @@ func NewNodeBridge(ctx context.Context, address string, logger *logger.Logger) (
 		return 1 * time.Second
 	}
 
-	logger.Info("Connecting to node and reading protocol parameters...")
+	log.Info("Connecting to node and reading protocol parameters...")
 	nodeConfig, err := client.ReadNodeConfiguration(ctx, &inx.NoParams{}, grpc_retry.WithMax(5), grpc_retry.WithBackoff(retryBackoff))
 	if err != nil {
 		return nil, err
 	}
 
 	return &NodeBridge{
-		logger:     logger,
-		conn:       conn,
-		client:     client,
-		NodeConfig: nodeConfig,
+		WrappedLogger: logger.NewWrappedLogger(log),
+		conn:          conn,
+		client:        client,
+		NodeConfig:    nodeConfig,
 	}, nil
 }
 
@@ -112,7 +114,7 @@ func (n *NodeBridge) Milestone(index uint32) (*iotago.Milestone, error) {
 }
 
 func (n *NodeBridge) FetchMilestoneCone(index uint32) (iotago.BlockIDs, error) {
-	fmt.Printf("Fetch cone of milestone %d\n", index)
+	n.LogDebugf("Fetch cone of milestone %d\n", index)
 	req := &inx.MilestoneRequest{
 		MilestoneIndex: index,
 	}
@@ -133,7 +135,7 @@ func (n *NodeBridge) FetchMilestoneCone(index uint32) (iotago.BlockIDs, error) {
 
 		blockIDs = append(blockIDs, payload.UnwrapBlockID())
 	}
-	fmt.Printf("Milestone %d contained %d blocks\n", index, len(blockIDs))
+	n.LogDebugf("Milestone %d contained %d blocks\n", index, len(blockIDs))
 	return blockIDs, nil
 }
 
