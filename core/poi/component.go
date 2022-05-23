@@ -2,6 +2,7 @@ package poi
 
 import (
 	"context"
+	"io"
 	"net/http"
 	"time"
 
@@ -10,9 +11,13 @@ import (
 	"github.com/pkg/errors"
 	"go.uber.org/dig"
 
+	"github.com/gohornet/hornet/pkg/keymanager"
+	"github.com/gohornet/hornet/pkg/model/milestone"
+	"github.com/gohornet/inx-app/nodebridge"
 	"github.com/gohornet/inx-poi/pkg/daemon"
-	"github.com/gohornet/inx-poi/pkg/nodebridge"
 	"github.com/iotaledger/hive.go/app"
+	inx "github.com/iotaledger/inx/go"
+	iotago "github.com/iotaledger/iota.go/v3"
 )
 
 func init() {
@@ -21,6 +26,7 @@ func init() {
 			Name:     "POI",
 			Params:   params,
 			DepsFunc: func(cDeps dependencies) { deps = cDeps },
+			Provide:  provide,
 			Run:      run,
 		},
 	}
@@ -33,7 +39,9 @@ var (
 
 type dependencies struct {
 	dig.In
-	NodeBridge *nodebridge.NodeBridge
+	NodeBridge              *nodebridge.NodeBridge
+	KeyManager              *keymanager.KeyManager
+	MilestonePublicKeyCount int `name:"milestonePublicKeyCount"`
 }
 
 func newEcho() *echo.Echo {
@@ -41,6 +49,32 @@ func newEcho() *echo.Echo {
 	e.HideBanner = true
 	e.Use(middleware.Recover())
 	return e
+}
+
+func provide(c *dig.Container) error {
+
+	type inDeps struct {
+		dig.In
+		NodeBridge *nodebridge.NodeBridge
+	}
+
+	type outDeps struct {
+		dig.Out
+		KeyManager              *keymanager.KeyManager
+		MilestonePublicKeyCount int `name:"milestonePublicKeyCount"`
+	}
+
+	return c.Provide(func(deps inDeps) outDeps {
+		keyManager := keymanager.New()
+		for _, keyRange := range deps.NodeBridge.NodeConfig.GetMilestoneKeyRanges() {
+			keyManager.AddKeyRange(keyRange.GetPublicKey(), milestone.Index(keyRange.GetStartIndex()), milestone.Index(keyRange.GetEndIndex()))
+		}
+		return outDeps{
+			KeyManager:              keyManager,
+			MilestonePublicKeyCount: int(deps.NodeBridge.NodeConfig.GetMilestonePublicKeyCount()),
+		}
+	})
+
 }
 
 func run() error {
@@ -79,4 +113,30 @@ func run() error {
 	}
 
 	return nil
+}
+
+func FetchMilestoneCone(index uint32) (iotago.BlockIDs, error) {
+	CoreComponent.LogDebugf("Fetch cone of milestone %d\n", index)
+	req := &inx.MilestoneRequest{
+		MilestoneIndex: index,
+	}
+	stream, err := deps.NodeBridge.Client().ReadMilestoneConeMetadata(context.Background(), req)
+	if err != nil {
+		return nil, err
+	}
+	var blockIDs iotago.BlockIDs
+	for {
+		payload, err := stream.Recv()
+		if err != nil {
+			if err == io.EOF {
+				// We are done
+				break
+			}
+			return nil, err
+		}
+
+		blockIDs = append(blockIDs, payload.UnwrapBlockID())
+	}
+	CoreComponent.LogDebugf("Milestone %d contained %d blocks\n", index, len(blockIDs))
+	return blockIDs, nil
 }

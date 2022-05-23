@@ -1,7 +1,7 @@
 package app
 
 import (
-	"github.com/gohornet/inx-poi/core/inx"
+	"github.com/gohornet/inx-app/inx"
 	"github.com/gohornet/inx-poi/core/poi"
 	"github.com/iotaledger/hive.go/app"
 	"github.com/iotaledger/hive.go/app/core/shutdown"

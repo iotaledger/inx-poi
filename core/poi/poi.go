@@ -7,7 +7,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
-	
+
 	"github.com/gohornet/hornet/pkg/model/milestone"
 	restapipkg "github.com/gohornet/hornet/pkg/restapi"
 	"github.com/gohornet/hornet/pkg/whiteflag"
@@ -23,7 +23,7 @@ func createProof(c echo.Context) (*ProofRequestAndResponse, error) {
 		return nil, err
 	}
 
-	metadata, err := deps.NodeBridge.BlockMetadataForBlockID(blockID)
+	metadata, err := deps.NodeBridge.BlockMetadata(blockID)
 	if err != nil {
 		return nil, err
 	}
@@ -33,17 +33,17 @@ func createProof(c echo.Context) (*ProofRequestAndResponse, error) {
 		return nil, errors.WithMessagef(restapipkg.ErrInvalidParameter, "block %s is not referenced by a milestone", blockID.ToHex())
 	}
 
-	milestone, err := deps.NodeBridge.Milestone(msIndex)
+	ms, err := deps.NodeBridge.Milestone(msIndex)
 	if err != nil {
 		return nil, err
 	}
 
-	block, err := deps.NodeBridge.BlockForBlockID(blockID)
+	block, err := deps.NodeBridge.Block(blockID)
 	if err != nil {
 		return nil, err
 	}
 
-	blockIDs, err := deps.NodeBridge.FetchMilestoneCone(msIndex)
+	blockIDs, err := FetchMilestoneCone(msIndex)
 	if err != nil {
 		return nil, err
 	}
@@ -66,12 +66,12 @@ func createProof(c echo.Context) (*ProofRequestAndResponse, error) {
 
 	hash := proof.Hash(hasher)
 
-	if !bytes.Equal(hash, milestone.InclusionMerkleRoot[:]) {
+	if !bytes.Equal(hash, ms.Milestone.InclusionMerkleRoot[:]) {
 		return nil, errors.WithMessage(echo.ErrInternalServerError, "valid proof cannot be created")
 	}
 
 	return &ProofRequestAndResponse{
-		Milestone: milestone,
+		Milestone: ms.Milestone,
 		Block:     block,
 		Proof:     proof,
 	}, nil
@@ -104,8 +104,8 @@ func validateProof(c echo.Context) (*ValidateProofResponse, error) {
 	}
 
 	// Verify the contained Milestone signatures
-	keySet := deps.NodeBridge.KeyManager().PublicKeysSetForMilestoneIndex(milestone.Index(req.Milestone.Index))
-	if err := req.Milestone.VerifySignatures(deps.NodeBridge.MilestonePublicKeyCount(), keySet); err != nil {
+	keySet := deps.KeyManager.PublicKeysSetForMilestoneIndex(milestone.Index(req.Milestone.Index))
+	if err := req.Milestone.VerifySignatures(deps.MilestonePublicKeyCount, keySet); err != nil {
 		return &ValidateProofResponse{Valid: false}, nil
 	}
 
