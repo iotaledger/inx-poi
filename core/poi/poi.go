@@ -8,9 +8,9 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
 
-	"github.com/gohornet/hornet/pkg/model/milestone"
-	restapipkg "github.com/gohornet/hornet/pkg/restapi"
-	"github.com/gohornet/hornet/pkg/whiteflag"
+	"github.com/iotaledger/hornet/pkg/model/milestone"
+	restapipkg "github.com/iotaledger/hornet/pkg/restapi"
+	"github.com/iotaledger/hornet/pkg/whiteflag"
 
 	// import implementation
 	_ "golang.org/x/crypto/blake2b"
