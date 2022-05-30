@@ -1,7 +1,7 @@
 package poi
 
 import (
-	"github.com/gohornet/hornet/pkg/whiteflag"
+	"github.com/iotaledger/hornet/pkg/whiteflag"
 	iotago "github.com/iotaledger/iota.go/v3"
 )
 

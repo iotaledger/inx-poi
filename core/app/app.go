@@ -1,11 +1,11 @@
 package app
 
 import (
-	"github.com/gohornet/inx-app/inx"
-	"github.com/gohornet/inx-poi/core/poi"
 	"github.com/iotaledger/hive.go/app"
 	"github.com/iotaledger/hive.go/app/core/shutdown"
 	"github.com/iotaledger/hive.go/app/plugins/profiling"
+	"github.com/iotaledger/inx-app/inx"
+	"github.com/iotaledger/inx-poi/core/poi"
 )
 
 var (
@@ -13,7 +13,7 @@ var (
 	Name = "inx-poi"
 
 	// Version of the app.
-	Version = "0.1.0"
+	Version = "0.2.0"
 )
 
 func App() *app.App {

@@ -11,11 +11,11 @@ import (
 	"github.com/pkg/errors"
 	"go.uber.org/dig"
 
-	"github.com/gohornet/hornet/pkg/keymanager"
-	"github.com/gohornet/hornet/pkg/model/milestone"
-	"github.com/gohornet/inx-app/nodebridge"
-	"github.com/gohornet/inx-poi/pkg/daemon"
 	"github.com/iotaledger/hive.go/app"
+	"github.com/iotaledger/hornet/pkg/keymanager"
+	"github.com/iotaledger/hornet/pkg/model/milestone"
+	"github.com/iotaledger/inx-app/nodebridge"
+	"github.com/iotaledger/inx-poi/pkg/daemon"
 	inx "github.com/iotaledger/inx/go"
 	iotago "github.com/iotaledger/iota.go/v3"
 )

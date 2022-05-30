@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/gohornet/inx-poi/core/app"
+	"github.com/iotaledger/inx-poi/core/app"
 )
 
 func main() {
