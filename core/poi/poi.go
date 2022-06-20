@@ -3,8 +3,6 @@ package poi
 import (
 	"bytes"
 	"crypto"
-	"encoding"
-
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
 
@@ -49,17 +47,16 @@ func createProof(c echo.Context) (*ProofRequestAndResponse, error) {
 	}
 
 	var blockIDIndex int
-	includedBlocks := []encoding.BinaryMarshaler{}
 	for i, b := range blockIDs {
 		if b == blockID {
 			blockIDIndex = i
+			break
 		}
-		includedBlocks = append(includedBlocks, b)
 	}
 
 	hasher := whiteflag.NewHasher(crypto.BLAKE2b_256)
 
-	proof, err := hasher.ComputeInclusionProof(includedBlocks, blockIDIndex)
+	proof, err := hasher.ComputeInclusionProof(blockIDs, blockIDIndex)
 	if err != nil {
 		return nil, err
 	}
