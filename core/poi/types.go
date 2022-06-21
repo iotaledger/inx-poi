@@ -1,14 +1,14 @@
 package poi
 
 import (
-	"github.com/iotaledger/hornet/pkg/whiteflag"
 	iotago "github.com/iotaledger/iota.go/v3"
+	"github.com/iotaledger/iota.go/v3/merklehasher"
 )
 
 type ProofRequestAndResponse struct {
-	Milestone *iotago.Milestone         `json:"milestone"`
-	Block     *iotago.Block             `json:"block"`
-	Proof     *whiteflag.InclusionProof `json:"proof"`
+	Milestone *iotago.Milestone   `json:"milestone"`
+	Block     *iotago.Block       `json:"block"`
+	Proof     *merklehasher.Proof `json:"proof"`
 }
 
 type ValidateProofResponse struct {
