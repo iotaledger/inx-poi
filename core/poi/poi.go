@@ -8,7 +8,7 @@ import (
 
 	"github.com/iotaledger/hornet/pkg/model/milestone"
 	restapipkg "github.com/iotaledger/hornet/pkg/restapi"
-	"github.com/iotaledger/hornet/pkg/whiteflag"
+	"github.com/iotaledger/iota.go/v3/merklehasher"
 
 	// import implementation
 	_ "golang.org/x/crypto/blake2b"
@@ -46,17 +46,9 @@ func createProof(c echo.Context) (*ProofRequestAndResponse, error) {
 		return nil, err
 	}
 
-	var blockIDIndex int
-	for i, b := range blockIDs {
-		if b == blockID {
-			blockIDIndex = i
-			break
-		}
-	}
+	hasher := merklehasher.NewHasher(crypto.BLAKE2b_256)
 
-	hasher := whiteflag.NewHasher(crypto.BLAKE2b_256)
-
-	proof, err := hasher.ComputeInclusionProof(blockIDs, blockIDIndex)
+	proof, err := hasher.ComputeProof(blockIDs, blockID)
 	if err != nil {
 		return nil, err
 	}
@@ -106,7 +98,7 @@ func validateProof(c echo.Context) (*ValidateProofResponse, error) {
 		return &ValidateProofResponse{Valid: false}, nil
 	}
 
-	hash := req.Proof.Hash(whiteflag.NewHasher(crypto.BLAKE2b_256))
+	hash := req.Proof.Hash(merklehasher.NewHasher(crypto.BLAKE2b_256))
 
 	return &ValidateProofResponse{Valid: bytes.Equal(hash, req.Milestone.InclusionMerkleRoot[:])}, nil
 }

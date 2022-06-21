@@ -4,10 +4,10 @@ go 1.18
 
 require (
 	github.com/iotaledger/hive.go v0.0.0-20220531132324-8347a155e220
-	github.com/iotaledger/hornet v1.1.0-rc1.0.20220620130233-16ae517bcdad
-	github.com/iotaledger/inx-app v0.0.0-20220620113337-e692a283ab0d
+	github.com/iotaledger/hornet v1.1.0-rc1.0.20220621111400-f5426c2ac1ae
+	github.com/iotaledger/inx-app v0.0.0-20220621112154-a10fe25839ed
 	github.com/iotaledger/inx/go v0.0.0-20220615123503-f64096762c65
-	github.com/iotaledger/iota.go/v3 v3.0.0-20220620112952-56012db9ef6a
+	github.com/iotaledger/iota.go/v3 v3.0.0-20220621104034-d2f8a5e6287e
 	github.com/labstack/echo/v4 v4.7.2
 	github.com/pkg/errors v0.9.1
 	go.uber.org/dig v1.14.1
@@ -21,7 +21,6 @@ require (
 	github.com/btcsuite/btcd/btcec/v2 v2.2.0 // indirect
 	github.com/btcsuite/btcd/chaincfg/chainhash v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
-	github.com/cockroachdb/pebble v0.0.0-20220616214320-059c072fd94a // indirect
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.0.1 // indirect
 	github.com/eclipse/paho.mqtt.golang v1.4.1 // indirect
 	github.com/emirpasic/gods v1.18.1 // indirect
@@ -41,7 +40,7 @@ require (
 	github.com/iotaledger/hive.go/serializer/v2 v2.0.0-20220531132324-8347a155e220 // indirect
 	github.com/iotaledger/iota.go v1.0.0 // indirect
 	github.com/ipfs/go-cid v0.2.0 // indirect
-	github.com/klauspost/cpuid/v2 v2.0.13 // indirect
+	github.com/klauspost/cpuid/v2 v2.0.14 // indirect
 	github.com/knadh/koanf v1.4.2 // indirect
 	github.com/labstack/gommon v0.3.1 // indirect
 	github.com/libp2p/go-buffer-pool v0.0.2 // indirect
