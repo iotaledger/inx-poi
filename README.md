@@ -6,11 +6,11 @@ INX-POI is an INX plugin which creates and validates Proof-of-Inclusions for blo
 
 ### Create a Proof-of-Inclusion
 
-To create a POI send a GET request to `http://{your-node-address}:14265/api/plugins/poi/v1/create/{blockID}`
+To create a POI send a GET request to `http://{your-node-address}:14265/api/poi/v1/create/{blockID}`
 
 ### Validate a Proof-of-Inclusion
 
-To validate a POI send the `application/json` payload of the created proof via POST request to `http://{your-node-address}:14265/api/plugins/poi/v1/validate`
+To validate a POI send the `application/json` payload of the created proof via POST request to `http://{your-node-address}:14265/api/poi/v1/validate`
 
 ## Example
 ```json
