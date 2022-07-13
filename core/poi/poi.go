@@ -6,7 +6,6 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
 
-	"github.com/iotaledger/hornet/pkg/model/milestone"
 	restapipkg "github.com/iotaledger/hornet/pkg/restapi"
 	"github.com/iotaledger/iota.go/v3/merklehasher"
 
@@ -93,7 +92,7 @@ func validateProof(c echo.Context) (*ValidateProofResponse, error) {
 	}
 
 	// Verify the contained Milestone signatures
-	keySet := deps.KeyManager.PublicKeysSetForMilestoneIndex(milestone.Index(req.Milestone.Index))
+	keySet := deps.KeyManager.PublicKeysSetForMilestoneIndex(req.Milestone.Index)
 	if err := req.Milestone.VerifySignatures(deps.MilestonePublicKeyCount, keySet); err != nil {
 		return &ValidateProofResponse{Valid: false}, nil
 	}

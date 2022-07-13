@@ -12,12 +12,11 @@ import (
 	"go.uber.org/dig"
 
 	"github.com/iotaledger/hive.go/app"
-	"github.com/iotaledger/hornet/pkg/keymanager"
-	"github.com/iotaledger/hornet/pkg/model/milestone"
 	"github.com/iotaledger/inx-app/nodebridge"
 	"github.com/iotaledger/inx-poi/pkg/daemon"
 	inx "github.com/iotaledger/inx/go"
 	iotago "github.com/iotaledger/iota.go/v3"
+	"github.com/iotaledger/iota.go/v3/keymanager"
 )
 
 func init() {
@@ -67,7 +66,7 @@ func provide(c *dig.Container) error {
 	return c.Provide(func(deps inDeps) outDeps {
 		keyManager := keymanager.New()
 		for _, keyRange := range deps.NodeBridge.NodeConfig.GetMilestoneKeyRanges() {
-			keyManager.AddKeyRange(keyRange.GetPublicKey(), milestone.Index(keyRange.GetStartIndex()), milestone.Index(keyRange.GetEndIndex()))
+			keyManager.AddKeyRange(keyRange.GetPublicKey(), iotago.MilestoneIndex(keyRange.GetStartIndex()), iotago.MilestoneIndex(keyRange.GetEndIndex()))
 		}
 		return outDeps{
 			KeyManager:              keyManager,
