@@ -6,7 +6,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
 
-	restapipkg "github.com/iotaledger/hornet/pkg/restapi"
+	restapipkg "github.com/iotaledger/hornet/v2/pkg/restapi"
 	"github.com/iotaledger/iota.go/v3/merklehasher"
 
 	// import implementation
