@@ -14,15 +14,15 @@ externalDocs:
 servers:
   - url: http://127.0.0.1:14265
 tags:
-  - name: generate
-    description: Proof-of-Inclusion generation.
+  - name: create
+    description: Proof-of-Inclusion creation.
   - name: validate
     description: Proof-of-Inclusion validation.
 paths:
   /api/poi/v1/create/{blockId}:
     get:
       tags:
-        - generate
+        - create
       summary: Returns proof data as JSON.
       description: >-
         Generate the proof for a block by its identifier. This endpoint returns
