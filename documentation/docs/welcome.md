@@ -28,7 +28,7 @@ These images are also used in our [HORNET recommended setup using Docker](http:/
 
 ## Configuration
 
-The extension is configured by default to connect to your HORNET instance.
+The extension will connect to your local HORNET instance by default.
 
 You can find all the configuration options in the [configuration section](configuration.md).
 
