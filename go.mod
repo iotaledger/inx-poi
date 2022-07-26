@@ -7,7 +7,7 @@ require (
 	github.com/iotaledger/hornet/v2 v2.0.0-beta.1.0.20220721081848-6838d5b9273b
 	github.com/iotaledger/inx-app v1.0.0-beta.2
 	github.com/iotaledger/inx/go v1.0.0-beta.2
-	github.com/iotaledger/iota.go/v3 v3.0.0-beta.3
+	github.com/iotaledger/iota.go/v3 v3.0.0-beta.4
 	github.com/labstack/echo/v4 v4.7.2
 	github.com/pkg/errors v0.9.1
 	go.uber.org/dig v1.14.1
