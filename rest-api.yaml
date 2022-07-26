@@ -15,9 +15,9 @@ servers:
   - url: http://127.0.0.1:14265
 tags:
   - name: generate
-    description: Proof-of-Inclution generation.
+    description: Proof-of-Inclusion generation.
   - name: validate
-    description: Proof-of-Inclution validation.
+    description: Proof-of-Inclusion validation.
 paths:
   /api/poi/v1/create/{blockId}:
     get:
