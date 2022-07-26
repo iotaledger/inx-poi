@@ -34,7 +34,7 @@ You can find all the configuration options in the [configuration section](config
 
 ## API
 
-The extension exposes a custom set of REST APIs that can be used to generate or validate proofs.
+The extension exposes a custom set of REST APIs that you can use to generate or validate proofs.
 
 You can find more information about the API in the [API reference section](api_reference.md).
 
