@@ -1,5 +1,5 @@
 ---
-description: INX-POI enables generating and verifying Proof-of-Inclusion in the Tangle or the ledger state.
+description: INX-POI enables generating and verifying Proof-of-Inclusion of blocks in the Tangle.
 image: /img/Banner/banner_hornet.png
 keywords:
 - IOTA Node
@@ -18,7 +18,7 @@ keywords:
 
 # Welcome to INX-POI
 
-INX-POI enables generating and verifying Proof-of-Inclusion in the Tangle or the ledger state.
+INX-POI enables generating and verifying Proof-of-Inclusion of blocks in the Tangle.
 Given a piece of data or transaction and the proof, one can verify whether it was included in the Tangle at a given point in time.
 
 ## Setup
