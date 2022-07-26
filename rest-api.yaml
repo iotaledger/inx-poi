@@ -270,7 +270,8 @@ components:
       description: The proof proving the inclusion of a block.
       properties:
         milestone:
-          type: string
+          description: Milestone payload in JSON representation. See Core API.
+          type: object
         block:
           description: Block in JSON representation. See Core API.
           type: object
