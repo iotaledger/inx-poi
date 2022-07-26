@@ -4,6 +4,9 @@ keywords:
 - IOTA Node 
 - Hornet Node
 - POI
+- Proof-Of-Inclusion
+- Proof
+- Inclusion
 - Configuration
 - JSON
 - Customize
