@@ -6,12 +6,11 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
 	"github.com/pkg/errors"
 	"go.uber.org/dig"
 
 	"github.com/iotaledger/hive.go/app"
+	"github.com/iotaledger/inx-app/httpserver"
 	"github.com/iotaledger/inx-app/nodebridge"
 	"github.com/iotaledger/inx-poi/pkg/daemon"
 	inx "github.com/iotaledger/inx/go"
@@ -41,13 +40,6 @@ type dependencies struct {
 	NodeBridge              *nodebridge.NodeBridge
 	KeyManager              *keymanager.KeyManager
 	MilestonePublicKeyCount int `name:"milestonePublicKeyCount"`
-}
-
-func newEcho() *echo.Echo {
-	e := echo.New()
-	e.HideBanner = true
-	e.Use(middleware.Recover())
-	return e
 }
 
 func provide(c *dig.Container) error {
@@ -81,7 +73,7 @@ func run() error {
 	if err := CoreComponent.Daemon().BackgroundWorker("API", func(ctx context.Context) {
 		CoreComponent.LogInfo("Starting API ... done")
 
-		e := newEcho()
+		e := httpserver.NewEcho(CoreComponent.Logger(), nil, ParamsPOI.DebugRequestLoggerEnabled)
 		setupRoutes(e)
 		go func() {
 			CoreComponent.LogInfof("You can now access the API using: http://%s", ParamsPOI.BindAddress)

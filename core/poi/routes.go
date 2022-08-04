@@ -5,13 +5,16 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	restapipkg "github.com/iotaledger/hornet/v2/pkg/restapi"
+	"github.com/iotaledger/inx-app/httpserver"
 )
 
 const (
 	APIRoute = "poi/v1"
 
-	RouteCreateProof   = "/create/:" + restapipkg.ParameterBlockID
+	// ParameterBlockID is used to identify a block by its ID.
+	ParameterBlockID = "blockID"
+
+	RouteCreateProof   = "/create/:" + ParameterBlockID
 	RouteValidateProof = "/validate"
 )
 
@@ -23,7 +26,7 @@ func setupRoutes(e *echo.Echo) {
 			return err
 		}
 
-		return restapipkg.JSONResponse(c, http.StatusOK, resp)
+		return httpserver.JSONResponse(c, http.StatusOK, resp)
 	})
 
 	e.POST(RouteValidateProof, func(c echo.Context) error {
@@ -31,6 +34,6 @@ func setupRoutes(e *echo.Echo) {
 		if err != nil {
 			return err
 		}
-		return restapipkg.JSONResponse(c, http.StatusOK, resp)
+		return httpserver.JSONResponse(c, http.StatusOK, resp)
 	})
 }
