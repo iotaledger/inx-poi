@@ -68,16 +68,18 @@ Example:
 
 ## <a id="poi"></a> 3. Proof-Of-Inclusion
 
-| Name        | Description                                       | Type   | Default value    |
-| ----------- | ------------------------------------------------- | ------ | ---------------- |
-| bindAddress | Bind address on which the POI HTTP server listens | string | "localhost:9687" |
+| Name                      | Description                                              | Type    | Default value    |
+| ------------------------- | -------------------------------------------------------- | ------- | ---------------- |
+| bindAddress               | Bind address on which the POI HTTP server listens        | string  | "localhost:9687" |
+| debugRequestLoggerEnabled | Whether the debug logging for requests should be enabled | boolean | false            |
 
 Example:
 
 ```json
   {
     "poi": {
-      "bindAddress": "localhost:9687"
+      "bindAddress": "localhost:9687",
+      "debugRequestLoggerEnabled": false
     }
   }
 ```

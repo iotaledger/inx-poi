@@ -3,10 +3,11 @@ package poi
 import (
 	"bytes"
 	"crypto"
+
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
 
-	restapipkg "github.com/iotaledger/hornet/v2/pkg/restapi"
+	"github.com/iotaledger/inx-app/httpserver"
 	"github.com/iotaledger/iota.go/v3/merklehasher"
 
 	// import implementation
@@ -15,7 +16,7 @@ import (
 
 func createProof(c echo.Context) (*ProofRequestAndResponse, error) {
 
-	blockID, err := restapipkg.ParseBlockIDParam(c)
+	blockID, err := httpserver.ParseBlockIDParam(c, ParameterBlockID)
 	if err != nil {
 		return nil, err
 	}
@@ -27,7 +28,7 @@ func createProof(c echo.Context) (*ProofRequestAndResponse, error) {
 
 	msIndex := metadata.GetReferencedByMilestoneIndex()
 	if msIndex == 0 {
-		return nil, errors.WithMessagef(restapipkg.ErrInvalidParameter, "block %s is not referenced by a milestone", blockID.ToHex())
+		return nil, errors.WithMessagef(httpserver.ErrInvalidParameter, "block %s is not referenced by a milestone", blockID.ToHex())
 	}
 
 	ms, err := deps.NodeBridge.Milestone(msIndex)
@@ -69,11 +70,11 @@ func validateProof(c echo.Context) (*ValidateProofResponse, error) {
 
 	req := &ProofRequestAndResponse{}
 	if err := c.Bind(req); err != nil {
-		return nil, errors.WithMessagef(restapipkg.ErrInvalidParameter, "invalid request, error: %s", err)
+		return nil, errors.WithMessagef(httpserver.ErrInvalidParameter, "invalid request, error: %s", err)
 	}
 
 	if req.Proof == nil || req.Milestone == nil || req.Block == nil {
-		return nil, errors.WithMessage(restapipkg.ErrInvalidParameter, "invalid request")
+		return nil, errors.WithMessage(httpserver.ErrInvalidParameter, "invalid request")
 	}
 
 	// Hash the contained block to get the ID

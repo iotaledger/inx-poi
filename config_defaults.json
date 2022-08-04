@@ -7,7 +7,8 @@
     "address": "localhost:9029"
   },
   "poi": {
-    "bindAddress": "localhost:9687"
+    "bindAddress": "localhost:9687",
+    "debugRequestLoggerEnabled": false
   },
   "profiling": {
     "enabled": false,
