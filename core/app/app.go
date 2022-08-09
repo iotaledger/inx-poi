@@ -1,9 +1,9 @@
 package app
 
 import (
-	"github.com/iotaledger/hive.go/app"
-	"github.com/iotaledger/hive.go/app/core/shutdown"
-	"github.com/iotaledger/hive.go/app/plugins/profiling"
+	"github.com/iotaledger/hive.go/core/app"
+	"github.com/iotaledger/hive.go/core/app/core/shutdown"
+	"github.com/iotaledger/hive.go/core/app/plugins/profiling"
 	"github.com/iotaledger/inx-app/inx"
 	"github.com/iotaledger/inx-poi/core/poi"
 )
@@ -13,7 +13,7 @@ var (
 	Name = "inx-poi"
 
 	// Version of the app.
-	Version = "1.0.0-beta.4"
+	Version = "1.0.0-beta.5"
 )
 
 func App() *app.App {
