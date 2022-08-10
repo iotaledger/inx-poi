@@ -3,8 +3,8 @@ module github.com/iotaledger/inx-poi
 go 1.19
 
 require (
-	github.com/iotaledger/hive.go/core v1.0.0-beta.1
-	github.com/iotaledger/inx-app v1.0.0-beta.7
+	github.com/iotaledger/hive.go/core v1.0.0-beta.2
+	github.com/iotaledger/inx-app v1.0.0-beta.6
 	github.com/iotaledger/inx/go v1.0.0-beta.5
 	github.com/iotaledger/iota.go/v3 v3.0.0-beta.6
 	github.com/labstack/echo/v4 v4.7.2
@@ -39,6 +39,7 @@ require (
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0 // indirect
 	github.com/hashicorp/go-version v1.6.0 // indirect
+	github.com/iotaledger/hive.go v0.0.0-20220714075325-11202fe498d6 // indirect
 	github.com/iotaledger/hive.go/serializer/v2 v2.0.0-beta.1 // indirect
 	github.com/iotaledger/iota.go v1.0.0 // indirect
 	github.com/knadh/koanf v1.4.2 // indirect
