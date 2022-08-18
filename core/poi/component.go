@@ -120,7 +120,7 @@ func FetchMilestoneCone(index uint32) (iotago.BlockIDs, error) {
 	for {
 		payload, err := stream.Recv()
 		if err != nil {
-			if err == io.EOF {
+			if errors.Is(err, io.EOF) {
 				// We are done
 				break
 			}
