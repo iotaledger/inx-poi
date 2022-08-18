@@ -58,7 +58,7 @@ func provide(c *dig.Container) error {
 	return c.Provide(func(deps inDeps) outDeps {
 		keyManager := keymanager.New()
 		for _, keyRange := range deps.NodeBridge.NodeConfig.GetMilestoneKeyRanges() {
-			keyManager.AddKeyRange(keyRange.GetPublicKey(), iotago.MilestoneIndex(keyRange.GetStartIndex()), iotago.MilestoneIndex(keyRange.GetEndIndex()))
+			keyManager.AddKeyRange(keyRange.GetPublicKey(), keyRange.GetStartIndex(), keyRange.GetEndIndex())
 		}
 
 		return outDeps{
