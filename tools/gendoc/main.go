@@ -6,7 +6,6 @@ import (
 
 	"github.com/iotaledger/hive.go/apputils/config"
 	"github.com/iotaledger/hive.go/core/app"
-
 	poiApp "github.com/iotaledger/inx-poi/core/app"
 )
 
