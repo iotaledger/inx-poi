@@ -34,6 +34,7 @@ func setupRoutes(e *echo.Echo) {
 		if err != nil {
 			return err
 		}
+
 		return httpserver.JSONResponse(c, http.StatusOK, resp)
 	})
 }

@@ -58,8 +58,9 @@ func provide(c *dig.Container) error {
 	return c.Provide(func(deps inDeps) outDeps {
 		keyManager := keymanager.New()
 		for _, keyRange := range deps.NodeBridge.NodeConfig.GetMilestoneKeyRanges() {
-			keyManager.AddKeyRange(keyRange.GetPublicKey(), iotago.MilestoneIndex(keyRange.GetStartIndex()), iotago.MilestoneIndex(keyRange.GetEndIndex()))
+			keyManager.AddKeyRange(keyRange.GetPublicKey(), keyRange.GetStartIndex(), keyRange.GetEndIndex())
 		}
+
 		return outDeps{
 			KeyManager:              keyManager,
 			MilestonePublicKeyCount: int(deps.NodeBridge.NodeConfig.GetMilestonePublicKeyCount()),
@@ -119,15 +120,17 @@ func FetchMilestoneCone(index uint32) (iotago.BlockIDs, error) {
 	for {
 		payload, err := stream.Recv()
 		if err != nil {
-			if err == io.EOF {
+			if errors.Is(err, io.EOF) {
 				// We are done
 				break
 			}
+
 			return nil, err
 		}
 
 		blockIDs = append(blockIDs, payload.UnwrapBlockID())
 	}
 	CoreComponent.LogDebugf("Milestone %d contained %d blocks\n", index, len(blockIDs))
+
 	return blockIDs, nil
 }

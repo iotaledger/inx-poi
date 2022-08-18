@@ -10,7 +10,7 @@ import (
 	"github.com/iotaledger/inx-app/httpserver"
 	"github.com/iotaledger/iota.go/v3/merklehasher"
 
-	// import implementation
+	// import implementation.
 	_ "golang.org/x/crypto/blake2b"
 )
 
@@ -46,6 +46,7 @@ func createProof(c echo.Context) (*ProofRequestAndResponse, error) {
 		return nil, err
 	}
 
+	//nolint:nosnakecase // crypto package uses underscores
 	hasher := merklehasher.NewHasher(crypto.BLAKE2b_256)
 
 	proof, err := hasher.ComputeProof(blockIDs, blockID)
@@ -95,9 +96,11 @@ func validateProof(c echo.Context) (*ValidateProofResponse, error) {
 	// Verify the contained Milestone signatures
 	keySet := deps.KeyManager.PublicKeysSetForMilestoneIndex(req.Milestone.Index)
 	if err := req.Milestone.VerifySignatures(deps.MilestonePublicKeyCount, keySet); err != nil {
+		//nolint:nilerr // false positive
 		return &ValidateProofResponse{Valid: false}, nil
 	}
 
+	//nolint:nosnakecase // crypto package uses underscores
 	hash := req.Proof.Hash(merklehasher.NewHasher(crypto.BLAKE2b_256))
 
 	return &ValidateProofResponse{Valid: bytes.Equal(hash, req.Milestone.InclusionMerkleRoot[:])}, nil
