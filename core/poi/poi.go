@@ -46,6 +46,7 @@ func createProof(c echo.Context) (*ProofRequestAndResponse, error) {
 		return nil, err
 	}
 
+	//nolint:nosnakecase // crypto package uses underscores
 	hasher := merklehasher.NewHasher(crypto.BLAKE2b_256)
 
 	proof, err := hasher.ComputeProof(blockIDs, blockID)
@@ -99,6 +100,7 @@ func validateProof(c echo.Context) (*ValidateProofResponse, error) {
 		return &ValidateProofResponse{Valid: false}, nil
 	}
 
+	//nolint:nosnakecase // crypto package uses underscores
 	hash := req.Proof.Hash(merklehasher.NewHasher(crypto.BLAKE2b_256))
 
 	return &ValidateProofResponse{Valid: bytes.Equal(hash, req.Milestone.InclusionMerkleRoot[:])}, nil
