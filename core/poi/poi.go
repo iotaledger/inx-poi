@@ -95,6 +95,7 @@ func validateProof(c echo.Context) (*ValidateProofResponse, error) {
 	// Verify the contained Milestone signatures
 	keySet := deps.KeyManager.PublicKeysSetForMilestoneIndex(req.Milestone.Index)
 	if err := req.Milestone.VerifySignatures(deps.MilestonePublicKeyCount, keySet); err != nil {
+		//nolint:nilerr // false positive
 		return &ValidateProofResponse{Valid: false}, nil
 	}
 
