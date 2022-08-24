@@ -16,6 +16,6 @@ keywords:
 
 # API Reference
 
-You can find specifications of the API exposed by INX-POI in the links below:
+You can find specifications of the INX-POI API by the link below:
 
 - [INX-POI REST API](https://editor.swagger.io/?url=https://raw.githubusercontent.com/iotaledger/inx-poi/develop/rest-api.yaml)

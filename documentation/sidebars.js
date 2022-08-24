@@ -17,16 +17,16 @@ module.exports = {
         },
         {
             type: 'category',
-            label: 'References',
+            label: 'Reference',
             items: [
                 {
                     type: 'doc',
-                    id: 'configuration',
+                    id: 'reference/configuration',
                     label: 'Configuration',
                 },
                 {
                     type: 'doc',
-                    id: 'api_reference',
+                    id: 'reference/api_reference',
                     label: 'API Reference',
                 }
             ]
