@@ -18,13 +18,12 @@ keywords:
 
 # Welcome to INX-POI
 
-INX-POI enables you to generate and verify Proof-of-Inclusion of blocks in the Tangle.
-Given a piece of data or transaction and the proof, you can verify whether it was included in the Tangle at any given time.
+INX-POI generates and verifies proofs of inclusion of blocks. By generating a proof, you can always verify that the block used to be part of the Tangle. The Tangle nodes truncate old blocks by necessity, but with proofs of inclusion, you can preserve important blocks on your own.
 
 ## Setup
 
-The recommended setup is to use the provided [Docker images](https://hub.docker.com/r/iotaledger/inx-poi).
-These images are also used in our [HORNET recommended setup using Docker](http://wiki.iota.org/hornet/develop/how_tos/using_docker).
+We recommend you to use the [Docker images](https://hub.docker.com/r/iotaledger/inx-poi).
+These images are also used in the [Docker setup](http://wiki.iota.org/hornet/develop/how_tos/using_docker) of Hornet.
 
 ## Configuration
 
@@ -34,7 +33,7 @@ You can find all the configuration options in the [configuration section](config
 
 ## API
 
-The extension exposes a custom set of REST APIs that you can use to generate or validate proofs.
+The extension exposes a custom set of REST APIs that you can use to generate or validate proofs of inclusion.
 
 You can find more information about the API in the [API reference section](api_reference.md).
 
