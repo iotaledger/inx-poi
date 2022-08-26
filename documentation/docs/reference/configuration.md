@@ -30,12 +30,14 @@ To get the description of configuration parameters for the installed version of 
 inx-poi -h --full
 ```
 
-## <a id="app"></a> 1. Application
+## Application
+
+The `app` object contains the application-related settings.
 
 | Name            | Description                                                                                            | Type    | Default value |
 | --------------- | ------------------------------------------------------------------------------------------------------ | ------- | ------------- |
 | checkForUpdates | If true, the application will check for updates.                                                       | boolean | true          |
-| stopGracePeriod | The maximum time for background processes to finish before the app would terminate on system shutdown. | string  | "5m"          |
+| stopGracePeriod | The maximum time for background processes to finish before the app terminates on system shutdown.      | string  | "5m"          |
 
 ### Example
 
@@ -48,7 +50,9 @@ inx-poi -h --full
 }
 ```
 
-## <a id="inx"></a> 2. INX
+## INX
+
+The `inx` object contains the INX-related settings.
 
 | Name    | Description                                        | Type   | Default value    |
 | ------- | -------------------------------------------------- | ------ | ---------------- |
@@ -64,7 +68,9 @@ inx-poi -h --full
 }
 ```
 
-## <a id="poi"></a> 3. Proof of Inclusion
+## Proof of Inclusion
+
+The `poi` object contains settings that are related to proofs of inclusion.
 
 | Name                      | Description                                              | Type    | Default value    |
 | ------------------------- | -------------------------------------------------------- | ------- | ---------------- |
@@ -82,7 +88,9 @@ inx-poi -h --full
 }
 ```
 
-## <a id="profiling"></a> 4. Profiling
+## Profiling
+
+The `profiling` object contains settings for profiling.
 
 | Name        | Description                                       | Type    | Default value    |
 | ----------- | ------------------------------------------------- | ------- | ---------------- |

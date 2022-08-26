@@ -18,7 +18,7 @@ keywords:
 
 # Welcome to INX-POI
 
-INX-POI generates and verifies proofs of inclusion of blocks. By generating a proof, you can always verify that the block used to be part of the Tangle. The Tangle nodes truncate old blocks by necessity, but with proofs of inclusion you can preserve important blocks on your own.
+INX-POI generates and verifies proofs of inclusion of blocks. By generating a proof, you can always verify that the block used to be part of the Tangle. The Tangle nodes truncate old blocks by necessity, but with proofs of inclusion, you can preserve important blocks on your own.
 
 ## Setup
 
@@ -33,7 +33,7 @@ You can find all the configuration options in the [configuration section](refere
 
 ## API
 
-The extension exposes a custom set of REST APIs that you can use to generate or validate proofs.
+The extension exposes a custom set of REST APIs that you can use to generate or validate proofs of inclusion.
 
 You can find more information about the API in the [API reference section](reference/api_reference.md).
 
