@@ -2,7 +2,9 @@ package poi
 
 import (
 	"bytes"
+	"context"
 	"crypto"
+	"time"
 
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
@@ -21,7 +23,10 @@ func createProof(c echo.Context) (*ProofRequestAndResponse, error) {
 		return nil, err
 	}
 
-	metadata, err := deps.NodeBridge.BlockMetadata(blockID)
+	ctx, cancel := context.WithTimeout(CoreComponent.Daemon().ContextStopped(), 5*time.Second)
+	defer cancel()
+
+	metadata, err := deps.NodeBridge.BlockMetadata(ctx, blockID)
 	if err != nil {
 		return nil, err
 	}
@@ -31,12 +36,12 @@ func createProof(c echo.Context) (*ProofRequestAndResponse, error) {
 		return nil, errors.WithMessagef(httpserver.ErrInvalidParameter, "block %s is not referenced by a milestone", blockID.ToHex())
 	}
 
-	ms, err := deps.NodeBridge.Milestone(msIndex)
+	ms, err := deps.NodeBridge.Milestone(ctx, msIndex)
 	if err != nil {
 		return nil, err
 	}
 
-	block, err := deps.NodeBridge.Block(blockID)
+	block, err := deps.NodeBridge.Block(ctx, blockID)
 	if err != nil {
 		return nil, err
 	}

@@ -75,30 +75,44 @@ func run() error {
 		CoreComponent.LogInfo("Starting API ... done")
 
 		e := httpserver.NewEcho(CoreComponent.Logger(), nil, ParamsPOI.DebugRequestLoggerEnabled)
+
+		CoreComponent.LogInfo("Starting API server ...")
+
 		setupRoutes(e)
 		go func() {
 			CoreComponent.LogInfof("You can now access the API using: http://%s", ParamsPOI.BindAddress)
 			if err := e.Start(ParamsPOI.BindAddress); err != nil && !errors.Is(err, http.ErrServerClosed) {
-				CoreComponent.LogWarnf("Stopped REST-API server due to an error (%s)", err)
+				CoreComponent.LogErrorfAndExit("Stopped REST-API server due to an error (%s)", err)
 			}
 		}()
 
-		if err := deps.NodeBridge.RegisterAPIRoute(APIRoute, ParamsPOI.BindAddress); err != nil {
-			CoreComponent.LogWarnf("Error registering INX api route (%s)", err)
-		}
+		ctxRegister, cancelRegister := context.WithTimeout(ctx, 5*time.Second)
 
+		if err := deps.NodeBridge.RegisterAPIRoute(ctxRegister, APIRoute, ParamsPOI.BindAddress); err != nil {
+			CoreComponent.LogErrorfAndExit("Registering INX api route failed: %s", err)
+		}
+		cancelRegister()
+
+		CoreComponent.LogInfo("Starting API server ... done")
 		<-ctx.Done()
 		CoreComponent.LogInfo("Stopping API ...")
 
-		if err := deps.NodeBridge.UnregisterAPIRoute(APIRoute); err != nil {
-			CoreComponent.LogWarnf("Error unregistering INX api route (%s)", err)
+		ctxUnregister, cancelUnregister := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancelUnregister()
+
+		//nolint:contextcheck // false positive
+		if err := deps.NodeBridge.UnregisterAPIRoute(ctxUnregister, APIRoute); err != nil {
+			CoreComponent.LogWarnf("Unregistering INX api route failed: %s", err)
 		}
 
 		shutdownCtx, shutdownCtxCancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer shutdownCtxCancel()
+
+		//nolint:contextcheck // false positive
 		if err := e.Shutdown(shutdownCtx); err != nil {
 			CoreComponent.LogWarn(err)
 		}
-		shutdownCtxCancel()
+
 		CoreComponent.LogInfo("Stopping API ... done")
 	}, daemon.PriorityStopRestAPI); err != nil {
 		CoreComponent.LogPanicf("failed to start worker: %s", err)
