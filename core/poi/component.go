@@ -75,21 +75,25 @@ func run() error {
 		CoreComponent.LogInfo("Starting API ... done")
 
 		e := httpserver.NewEcho(CoreComponent.Logger(), nil, ParamsPOI.DebugRequestLoggerEnabled)
+
+		CoreComponent.LogInfo("Starting API server ...")
+
 		setupRoutes(e)
 		go func() {
 			CoreComponent.LogInfof("You can now access the API using: http://%s", ParamsPOI.BindAddress)
 			if err := e.Start(ParamsPOI.BindAddress); err != nil && !errors.Is(err, http.ErrServerClosed) {
-				CoreComponent.LogWarnf("Stopped REST-API server due to an error (%s)", err)
+				CoreComponent.LogErrorfAndExit("Stopped REST-API server due to an error (%s)", err)
 			}
 		}()
 
 		ctxRegister, cancelRegister := context.WithTimeout(ctx, 5*time.Second)
-		defer cancelRegister()
 
 		if err := deps.NodeBridge.RegisterAPIRoute(ctxRegister, APIRoute, ParamsPOI.BindAddress); err != nil {
-			CoreComponent.LogWarnf("Registering INX api route failed: %s", err)
+			CoreComponent.LogErrorfAndExit("Registering INX api route failed: %s", err)
 		}
+		cancelRegister()
 
+		CoreComponent.LogInfo("Starting API server ... done")
 		<-ctx.Done()
 		CoreComponent.LogInfo("Stopping API ...")
 
