@@ -39,10 +39,24 @@ inx-poi -h --full
 
 ## <a id="app"></a> 1. Application
 
-| Name            | Description                                                                                            | Type    | Default value |
-| --------------- | ------------------------------------------------------------------------------------------------------ | ------- | ------------- |
-| checkForUpdates | Whether to check for updates of the application or not                                                 | boolean | true          |
-| stopGracePeriod | The maximum time to wait for background processes to finish during shutdown before terminating the app | string  | "5m"          |
+| Name                      | Description                                            | Type    | Default value |
+| ------------------------- | ------------------------------------------------------ | ------- | ------------- |
+| checkForUpdates           | Whether to check for updates of the application or not | boolean | true          |
+| [shutdown](#app_shutdown) | Configuration for shutdown                             | object  |               |
+
+### <a id="app_shutdown"></a> Shutdown
+
+| Name                     | Description                                                                                            | Type   | Default value |
+| ------------------------ | ------------------------------------------------------------------------------------------------------ | ------ | ------------- |
+| stopGracePeriod          | The maximum time to wait for background processes to finish during shutdown before terminating the app | string | "5m"          |
+| [log](#app_shutdown_log) | Configuration for log                                                                                  | object |               |
+
+### <a id="app_shutdown_log"></a> Log
+
+| Name     | Description                                         | Type    | Default value  |
+| -------- | --------------------------------------------------- | ------- | -------------- |
+| enabled  | Whether to store self-shutdown events to a log file | boolean | true           |
+| filePath | The file path to the self-shutdown log              | string  | "shutdown.log" |
 
 Example:
 
@@ -50,12 +64,48 @@ Example:
   {
     "app": {
       "checkForUpdates": true,
-      "stopGracePeriod": "5m"
+      "shutdown": {
+        "stopGracePeriod": "5m",
+        "log": {
+          "enabled": true,
+          "filePath": "shutdown.log"
+        }
+      }
     }
   }
 ```
 
-## <a id="inx"></a> 2. INX
+## <a id="logger"></a> 2. Logger
+
+| Name              | Description                                                                 | Type    | Default value |
+| ----------------- | --------------------------------------------------------------------------- | ------- | ------------- |
+| level             | The minimum enabled logging level                                           | string  | "info"        |
+| disableCaller     | Stops annotating logs with the calling function's file name and line number | boolean | true          |
+| disableStacktrace | Disables automatic stacktrace capturing                                     | boolean | false         |
+| stacktraceLevel   | The level stacktraces are captured and above                                | string  | "panic"       |
+| encoding          | The logger's encoding (options: "json", "console")                          | string  | "console"     |
+| outputPaths       | A list of URLs, file paths or stdout/stderr to write logging output to      | array   | stdout        |
+| disableEvents     | Prevents log messages from being raced as events                            | boolean | true          |
+
+Example:
+
+```json
+  {
+    "logger": {
+      "level": "info",
+      "disableCaller": true,
+      "disableStacktrace": false,
+      "stacktraceLevel": "panic",
+      "encoding": "console",
+      "outputPaths": [
+        "stdout"
+      ],
+      "disableEvents": true
+    }
+  }
+```
+
+## <a id="inx"></a> 3. INX
 
 | Name    | Description                            | Type   | Default value    |
 | ------- | -------------------------------------- | ------ | ---------------- |
@@ -71,7 +121,7 @@ Example:
   }
 ```
 
-## <a id="poi"></a> 3. Proof-Of-Inclusion
+## <a id="poi"></a> 4. Proof-Of-Inclusion
 
 | Name                      | Description                                              | Type    | Default value    |
 | ------------------------- | -------------------------------------------------------- | ------- | ---------------- |
@@ -89,7 +139,7 @@ Example:
   }
 ```
 
-## <a id="profiling"></a> 4. Profiling
+## <a id="profiling"></a> 5. Profiling
 
 | Name        | Description                                       | Type    | Default value    |
 | ----------- | ------------------------------------------------- | ------- | ---------------- |
