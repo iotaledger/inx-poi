@@ -121,19 +121,21 @@ Example:
   }
 ```
 
-## <a id="poi"></a> 4. Proof-Of-Inclusion
+## <a id="restapi"></a> 4. RestAPI
 
-| Name                      | Description                                              | Type    | Default value    |
-| ------------------------- | -------------------------------------------------------- | ------- | ---------------- |
-| bindAddress               | Bind address on which the POI HTTP server listens        | string  | "localhost:9687" |
-| debugRequestLoggerEnabled | Whether the debug logging for requests should be enabled | boolean | false            |
+| Name                      | Description                                                                         | Type    | Default value    |
+| ------------------------- | ----------------------------------------------------------------------------------- | ------- | ---------------- |
+| bindAddress               | The bind address on which the POI HTTP server listens                               | string  | "localhost:9687" |
+| advertiseAddress          | The address of the POI HTTP server which is advertised to the INX Server (optional) | string  | ""               |
+| debugRequestLoggerEnabled | Whether the debug logging for requests should be enabled                            | boolean | false            |
 
 Example:
 
 ```json
   {
-    "poi": {
+    "restAPI": {
       "bindAddress": "localhost:9687",
+      "advertiseAddress": "",
       "debugRequestLoggerEnabled": false
     }
   }

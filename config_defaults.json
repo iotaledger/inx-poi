@@ -23,8 +23,9 @@
   "inx": {
     "address": "localhost:9029"
   },
-  "poi": {
+  "restAPI": {
     "bindAddress": "localhost:9687",
+    "advertiseAddress": "",
     "debugRequestLoggerEnabled": false
   },
   "profiling": {
