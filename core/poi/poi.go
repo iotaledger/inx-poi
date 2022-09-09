@@ -46,7 +46,7 @@ func createProof(c echo.Context) (*ProofRequestAndResponse, error) {
 		return nil, err
 	}
 
-	blockIDs, err := FetchMilestoneCone(msIndex)
+	blockIDs, err := FetchMilestoneCone(ctx, msIndex)
 	if err != nil {
 		return nil, err
 	}
