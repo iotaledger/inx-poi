@@ -2,7 +2,6 @@ package poi
 
 import (
 	"context"
-	"io"
 	"net/http"
 	"time"
 
@@ -126,29 +125,19 @@ func run() error {
 	return nil
 }
 
-func FetchMilestoneCone(index uint32) (iotago.BlockIDs, error) {
+func FetchMilestoneCone(ctx context.Context, index uint32) (iotago.BlockIDs, error) {
 	CoreComponent.LogDebugf("Fetch cone of milestone %d\n", index)
-	req := &inx.MilestoneRequest{
-		MilestoneIndex: index,
-	}
-	stream, err := deps.NodeBridge.Client().ReadMilestoneConeMetadata(context.Background(), req)
-	if err != nil {
+
+	fetchContext, cancel := context.WithCancel(ctx)
+	defer cancel()
+
+	var blockIDs iotago.BlockIDs
+	if err := deps.NodeBridge.MilestoneConeMetadata(fetchContext, cancel, index, func(metadata *inx.BlockMetadata) {
+		blockIDs = append(blockIDs, metadata.UnwrapBlockID())
+	}); err != nil {
 		return nil, err
 	}
-	var blockIDs iotago.BlockIDs
-	for {
-		payload, err := stream.Recv()
-		if err != nil {
-			if errors.Is(err, io.EOF) {
-				// We are done
-				break
-			}
 
-			return nil, err
-		}
-
-		blockIDs = append(blockIDs, payload.UnwrapBlockID())
-	}
 	CoreComponent.LogDebugf("Milestone %d contained %d blocks\n", index, len(blockIDs))
 
 	return blockIDs, nil
