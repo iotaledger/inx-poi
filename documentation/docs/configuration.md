@@ -125,7 +125,7 @@ Example:
 
 | Name                      | Description                                                                         | Type    | Default value    |
 | ------------------------- | ----------------------------------------------------------------------------------- | ------- | ---------------- |
-| bindAddress               | The bind address on which the POI HTTP server listens                               | string  | "localhost:9091" |
+| bindAddress               | The bind address on which the POI HTTP server listens                               | string  | "localhost:9687" |
 | advertiseAddress          | The address of the POI HTTP server which is advertised to the INX Server (optional) | string  | ""               |
 | debugRequestLoggerEnabled | Whether the debug logging for requests should be enabled                            | boolean | false            |
 
@@ -134,7 +134,7 @@ Example:
 ```json
   {
     "restAPI": {
-      "bindAddress": "localhost:9091",
+      "bindAddress": "localhost:9687",
       "advertiseAddress": "",
       "debugRequestLoggerEnabled": false
     }

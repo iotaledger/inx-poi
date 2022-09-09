@@ -24,7 +24,7 @@
     "address": "localhost:9029"
   },
   "restAPI": {
-    "bindAddress": "localhost:9091",
+    "bindAddress": "localhost:9687",
     "advertiseAddress": "",
     "debugRequestLoggerEnabled": false
   },
