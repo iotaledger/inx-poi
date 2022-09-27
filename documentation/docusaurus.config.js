@@ -5,18 +5,11 @@ module.exports = {
         [
             '@docusaurus/plugin-content-docs',
             {
-                id: 'inx-poi-develop',
+                id: 'inx-poi',
                 path: path.resolve(__dirname, 'docs'),
                 routeBasePath: 'inx-poi',
                 sidebarPath: path.resolve(__dirname, 'sidebars.js'),
                 editUrl: 'https://github.com/gohornet/inx-poi/edit/develop/documentation',
-                versions: {
-                    current: {
-                        label: 'Develop',
-                        path: 'develop',
-                        badge: true
-                    },
-                },
             }
         ],
     ],
