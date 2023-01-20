@@ -22,7 +22,8 @@
   },
   "inx": {
     "address": "localhost:9029",
-    "maxConnectionAttempts": 30
+    "maxConnectionAttempts": 30,
+    "targetNetworkName": ""
   },
   "restAPI": {
     "bindAddress": "localhost:9687",
