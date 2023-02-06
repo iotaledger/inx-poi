@@ -3,7 +3,7 @@ module github.com/iotaledger/inx-poi
 go 1.19
 
 require (
-	github.com/iotaledger/hive.go/core v1.0.0-rc.2
+	github.com/iotaledger/hive.go/core v1.0.0-rc.3
 	github.com/iotaledger/inx-app v1.0.0-rc.2
 	github.com/iotaledger/inx/go v1.0.0-rc.1
 	github.com/iotaledger/iota.go/v3 v3.0.0-rc.1
