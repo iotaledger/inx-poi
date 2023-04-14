@@ -23,7 +23,7 @@ func createProof(c echo.Context) (*ProofRequestAndResponse, error) {
 		return nil, err
 	}
 
-	ctx, cancel := context.WithTimeout(CoreComponent.Daemon().ContextStopped(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(Component.Daemon().ContextStopped(), 5*time.Second)
 	defer cancel()
 
 	metadata, err := deps.NodeBridge.BlockMetadata(ctx, blockID)

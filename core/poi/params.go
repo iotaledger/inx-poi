@@ -1,7 +1,7 @@
 package poi
 
 import (
-	"github.com/iotaledger/hive.go/core/app"
+	"github.com/iotaledger/hive.go/app"
 )
 
 // ParametersRestAPI contains the definition of the parameters used by the POI HTTP server.
