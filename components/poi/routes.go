@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	APIRoute = "poi/v1"
+	APIRoute = "/api/poi/v1"
 
 	// ParameterBlockID is used to identify a block by its ID.
 	ParameterBlockID = "blockID"

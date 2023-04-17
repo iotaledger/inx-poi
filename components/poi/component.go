@@ -3,12 +3,13 @@ package poi
 import (
 	"context"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/pkg/errors"
 	"go.uber.org/dig"
 
-	"github.com/iotaledger/hive.go/core/app"
+	"github.com/iotaledger/hive.go/app"
 	"github.com/iotaledger/inx-app/pkg/httpserver"
 	"github.com/iotaledger/inx-app/pkg/nodebridge"
 	"github.com/iotaledger/inx-poi/pkg/daemon"
@@ -18,20 +19,18 @@ import (
 )
 
 func init() {
-	CoreComponent = &app.CoreComponent{
-		Component: &app.Component{
-			Name:     "POI",
-			Params:   params,
-			DepsFunc: func(cDeps dependencies) { deps = cDeps },
-			Provide:  provide,
-			Run:      run,
-		},
+	Component = &app.Component{
+		Name:     "POI",
+		Params:   params,
+		DepsFunc: func(cDeps dependencies) { deps = cDeps },
+		Provide:  provide,
+		Run:      run,
 	}
 }
 
 var (
-	CoreComponent *app.CoreComponent
-	deps          dependencies
+	Component *app.Component
+	deps      dependencies
 )
 
 type dependencies struct {
@@ -70,18 +69,18 @@ func provide(c *dig.Container) error {
 
 func run() error {
 	// create a background worker that handles the API
-	if err := CoreComponent.Daemon().BackgroundWorker("API", func(ctx context.Context) {
-		CoreComponent.LogInfo("Starting API ... done")
+	if err := Component.Daemon().BackgroundWorker("API", func(ctx context.Context) {
+		Component.LogInfo("Starting API ... done")
 
-		e := httpserver.NewEcho(CoreComponent.Logger(), nil, ParamsRestAPI.DebugRequestLoggerEnabled)
+		e := httpserver.NewEcho(Component.Logger(), nil, ParamsRestAPI.DebugRequestLoggerEnabled)
 
-		CoreComponent.LogInfo("Starting API server ...")
+		Component.LogInfo("Starting API server ...")
 
 		setupRoutes(e)
 		go func() {
-			CoreComponent.LogInfof("You can now access the API using: http://%s", ParamsRestAPI.BindAddress)
+			Component.LogInfof("You can now access the API using: http://%s", ParamsRestAPI.BindAddress)
 			if err := e.Start(ParamsRestAPI.BindAddress); err != nil && !errors.Is(err, http.ErrServerClosed) {
-				CoreComponent.LogErrorfAndExit("Stopped REST-API server due to an error (%s)", err)
+				Component.LogErrorfAndExit("Stopped REST-API server due to an error (%s)", err)
 			}
 		}()
 
@@ -92,21 +91,23 @@ func run() error {
 			advertisedAddress = ParamsRestAPI.AdvertiseAddress
 		}
 
-		if err := deps.NodeBridge.RegisterAPIRoute(ctxRegister, APIRoute, advertisedAddress); err != nil {
-			CoreComponent.LogErrorfAndExit("Registering INX api route failed: %s", err)
+		routeName := strings.Replace(APIRoute, "/api/", "", 1)
+
+		if err := deps.NodeBridge.RegisterAPIRoute(ctxRegister, routeName, advertisedAddress, APIRoute); err != nil {
+			Component.LogErrorfAndExit("Registering INX api route failed: %s", err)
 		}
 		cancelRegister()
 
-		CoreComponent.LogInfo("Starting API server ... done")
+		Component.LogInfo("Starting API server ... done")
 		<-ctx.Done()
-		CoreComponent.LogInfo("Stopping API ...")
+		Component.LogInfo("Stopping API ...")
 
 		ctxUnregister, cancelUnregister := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancelUnregister()
 
 		//nolint:contextcheck // false positive
-		if err := deps.NodeBridge.UnregisterAPIRoute(ctxUnregister, APIRoute); err != nil {
-			CoreComponent.LogWarnf("Unregistering INX api route failed: %s", err)
+		if err := deps.NodeBridge.UnregisterAPIRoute(ctxUnregister, routeName); err != nil {
+			Component.LogWarnf("Unregistering INX api route failed: %s", err)
 		}
 
 		shutdownCtx, shutdownCtxCancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -114,19 +115,19 @@ func run() error {
 
 		//nolint:contextcheck // false positive
 		if err := e.Shutdown(shutdownCtx); err != nil {
-			CoreComponent.LogWarn(err)
+			Component.LogWarn(err)
 		}
 
-		CoreComponent.LogInfo("Stopping API ... done")
+		Component.LogInfo("Stopping API ... done")
 	}, daemon.PriorityStopRestAPI); err != nil {
-		CoreComponent.LogPanicf("failed to start worker: %s", err)
+		Component.LogPanicf("failed to start worker: %s", err)
 	}
 
 	return nil
 }
 
 func FetchMilestoneCone(ctx context.Context, index uint32) (iotago.BlockIDs, error) {
-	CoreComponent.LogDebugf("Fetch cone of milestone %d\n", index)
+	Component.LogDebugf("Fetch cone of milestone %d\n", index)
 
 	fetchContext, cancel := context.WithCancel(ctx)
 	defer cancel()
@@ -138,7 +139,7 @@ func FetchMilestoneCone(ctx context.Context, index uint32) (iotago.BlockIDs, err
 		return nil, err
 	}
 
-	CoreComponent.LogDebugf("Milestone %d contained %d blocks\n", index, len(blockIDs))
+	Component.LogDebugf("Milestone %d contained %d blocks\n", index, len(blockIDs))
 
 	return blockIDs, nil
 }
