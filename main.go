@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/iotaledger/inx-poi/core/app"
+	"github.com/iotaledger/inx-poi/components/app"
 )
 
 func main() {
