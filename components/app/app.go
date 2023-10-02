@@ -13,7 +13,7 @@ var (
 	Name = "inx-poi"
 
 	// Version of the app.
-	Version = "1.0.0-rc.1"
+	Version = "1.0.0"
 )
 
 func App() *app.App {
