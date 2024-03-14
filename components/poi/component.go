@@ -76,7 +76,8 @@ func run() error {
 
 		Component.LogInfo("Starting API server ...")
 
-		setupRoutes(e)
+		setupRoutes(e.Group(APIRoute))
+
 		go func() {
 			Component.LogInfof("You can now access the API using: http://%s", ParamsRestAPI.BindAddress)
 			if err := e.Start(ParamsRestAPI.BindAddress); err != nil && !errors.Is(err, http.ErrServerClosed) {
