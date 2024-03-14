@@ -18,9 +18,9 @@ const (
 	RouteValidateProof = "/validate"
 )
 
-func setupRoutes(e *echo.Echo) {
+func setupRoutes(routeGroup *echo.Group) {
 
-	e.GET(RouteCreateProof, func(c echo.Context) error {
+	routeGroup.GET(RouteCreateProof, func(c echo.Context) error {
 		resp, err := createProof(c)
 		if err != nil {
 			return err
@@ -29,7 +29,7 @@ func setupRoutes(e *echo.Echo) {
 		return httpserver.JSONResponse(c, http.StatusOK, resp)
 	})
 
-	e.POST(RouteValidateProof, func(c echo.Context) error {
+	routeGroup.POST(RouteValidateProof, func(c echo.Context) error {
 		resp, err := validateProof(c)
 		if err != nil {
 			return err
